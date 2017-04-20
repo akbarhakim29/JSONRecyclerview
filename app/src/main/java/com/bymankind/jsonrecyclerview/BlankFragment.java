@@ -59,6 +59,7 @@ public class BlankFragment extends Fragment implements OnStartDragListener {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+
         // Inflate the layout for this fragment
         return view;
 
@@ -73,6 +74,7 @@ public class BlankFragment extends Fragment implements OnStartDragListener {
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         queue = NetworkController.getInstance(getContext()).getRequestQueue();
+
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -103,7 +105,6 @@ public class BlankFragment extends Fragment implements OnStartDragListener {
             }
         });
         queue.add(stringRequest);
-
     }
 
 

@@ -1,5 +1,7 @@
 package com.bymankind.jsonrecyclerview.helper;
 
+import android.support.v7.widget.RecyclerView;
+
 /**
  * Created by Server-Panduit on 4/13/2017.
  */

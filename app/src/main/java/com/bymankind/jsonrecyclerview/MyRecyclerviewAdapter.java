@@ -2,10 +2,8 @@ package com.bymankind.jsonrecyclerview;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,10 +11,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperAdapter;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperViewHolder;
 import com.bymankind.jsonrecyclerview.helper.OnStartDragListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +54,7 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         SetterGetter feeds = feedsList.get(position);
 
-    //    final int order_id = feeds.getOrder_id();
+     //   final int order_id = feeds.getOrder_id();
 
         holder.title.setText(feeds.getName());
         holder.content.setText(feeds.getOrder_invoice_number());
@@ -59,13 +63,6 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
         //holder.imageView.setImageUrl(feeds.getImgURL(),NetworkController.getInstance(context).getImageLoader());
 
         Glide.with(context).load(feeds.getPicture()).placeholder(R.drawable.yin_yang).into(holder.imageView);
-
-       /* holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,"id = "+ order_id,Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         //holder.ratingBar.setProgress(feeds.getRating());
 
@@ -82,6 +79,11 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
     }
 
     @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
     public int getItemCount() {
         return feedsList.size();
     }
@@ -94,8 +96,32 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
+        final SetterGetter currentData = feedsList.get(position);
         feedsList.remove(position);
+
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int code = jsonObject.getInt("code");
+
+                    if (code == 200){
+                        Toast.makeText(context,"id = "+currentData.getOrder_id()+" updated !",Toast.LENGTH_SHORT).show();
+
+                    }else {
+                        Toast.makeText(context,"id = "+currentData.getOrder_id()+" not updated !",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        UpdateRequest updateRequest = new UpdateRequest(currentData.getOrder_id(),listener);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(updateRequest);
+
         notifyItemRemoved(position);
     }
 
@@ -105,7 +131,8 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
         private ImageView imageView;
         private ProgressBar ratingBar;
 
-        public MyViewHolder(View itemView) {
+
+        public MyViewHolder(final View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_view);
             content = (TextView) itemView.findViewById(R.id.content_view);
@@ -118,6 +145,7 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
                     Toast.makeText(context,"Rated by User : "+feedsList.get(getAdapterPosition()).getRating(),Toast.LENGTH_LONG).show();
                 }
             });*/
+
         }
 
         @Override
