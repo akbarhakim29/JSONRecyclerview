@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperAdapter;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperViewHolder;
 import com.bymankind.jsonrecyclerview.helper.OnStartDragListener;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,17 +128,29 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
-        private TextView content,content2,title;
+        private TextView content,content2,content3,title;
         private ImageView imageView;
         private ProgressBar ratingBar;
-
+        private ExpandableTextView expandableTextView;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_view);
             content = (TextView) itemView.findViewById(R.id.content_view);
             content2 = (TextView) itemView.findViewById(R.id.content_view2);
+            content3 = (TextView) itemView.findViewById(R.id.expandable_text);
             imageView = (ImageView) itemView.findViewById(R.id.thumbnail);
+            expandableTextView = (ExpandableTextView) itemView.findViewById(R.id.expandable_text_view);
+
+            expandableTextView.setText("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
+                    "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " +
+                    "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, " +
+                    "sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, " +
+                    "qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. " +
+                    "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? " +
+                    "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, " +
+                    "vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?");
+
             /*ratingBar = (ProgressBar) itemView.findViewById(R.id.ratingbar_view);
             ratingBar.setOnClickListener(new View.OnClickListener() {
                 @Override
