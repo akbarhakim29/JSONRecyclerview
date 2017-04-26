@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperAdapter;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperViewHolder;
 import com.bymankind.jsonrecyclerview.helper.OnStartDragListener;
-import com.ms.square.android.expandabletextview.ExpandableTextView;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +64,19 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
         //when using bitmap Lrucache (setImageUrl) must using NetworkImageView
         //holder.imageView.setImageUrl(feeds.getImgURL(),NetworkController.getInstance(context).getImageLoader());
 
+        holder.buttonExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.content3.getMaxLines() <= 4){
+                    holder.content3.setMaxLines(100);
+                    holder.buttonExpand.setText("Collapse");
+                }else if(holder.content3.getMaxLines()> 4){
+                    holder.content3.setMaxLines(4);
+                    holder.buttonExpand.setText("Expand");
+                }
+            }
+        });
+
         Glide.with(context).load(feeds.getPicture()).placeholder(R.drawable.yin_yang).into(holder.imageView);
 
         //holder.ratingBar.setProgress(feeds.getRating());
@@ -76,6 +90,9 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
                 return false;
             }
         });*/
+
+        /*holder.setIsRecyclable(false);
+        holder.expandableLinearLayout.setInRecyclerView(true);*/
 
     }
 
@@ -131,25 +148,16 @@ public class MyRecyclerviewAdapter extends RecyclerView.Adapter<MyRecyclerviewAd
         private TextView content,content2,content3,title;
         private ImageView imageView;
         private ProgressBar ratingBar;
-        private ExpandableTextView expandableTextView;
+        private Button buttonExpand;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_view);
             content = (TextView) itemView.findViewById(R.id.content_view);
             content2 = (TextView) itemView.findViewById(R.id.content_view2);
-            content3 = (TextView) itemView.findViewById(R.id.expandable_text);
+            content3 = (TextView) itemView.findViewById(R.id.content_view3);
             imageView = (ImageView) itemView.findViewById(R.id.thumbnail);
-            expandableTextView = (ExpandableTextView) itemView.findViewById(R.id.expandable_text_view);
-
-            expandableTextView.setText("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
-                    "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " +
-                    "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, " +
-                    "sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, " +
-                    "qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. " +
-                    "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? " +
-                    "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, " +
-                    "vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?");
+            buttonExpand = (Button) itemView.findViewById(R.id.expand_button);
 
             /*ratingBar = (ProgressBar) itemView.findViewById(R.id.ratingbar_view);
             ratingBar.setOnClickListener(new View.OnClickListener() {
