@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperAdapter;
 import com.bymankind.jsonrecyclerview.helper.ItemTouchHelperViewHolder;
 import com.bymankind.jsonrecyclerview.helper.OnStartDragListener;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
